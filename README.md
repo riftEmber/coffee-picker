@@ -2,7 +2,7 @@
 
 ### Installing prereqs
 
-(assuming Python >= 3.14 available)
+(assuming Python >= 3.14 and `venv` module available)
 
 ```bash
 python -m venv venv

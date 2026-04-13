@@ -33,3 +33,9 @@ docker build -t coffee-challenge .
 ```bash
 docker run -it --rm -p 8000:8000 coffee-challenge
 ```
+
+### Use
+
+With the default run instructions, the app will be available at: http://localhost:8000
+
+TODO

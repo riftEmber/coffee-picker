@@ -61,7 +61,7 @@ def request_input(prompt: str) -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        prog="Coffee", description="Determines whose turn it is to pay for coffee"
+        prog="Coffee", description="Determine whose turn it is to pay for coffee today"
     )
     parser.add_argument("data_filename")
     args = parser.parse_args()

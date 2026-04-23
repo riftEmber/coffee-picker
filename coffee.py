@@ -18,6 +18,7 @@ class CoffeeDrinker:
     times_covered_by_others: int
 
     def amount_covered_by_others(self) -> float:
+        """Calculate the amount of money that has been paid by others on this person's behalf"""
         return self.drink_cost * self.times_covered_by_others
 
 
@@ -26,6 +27,7 @@ class CoffeeData:
     drinkers: list[CoffeeDrinker] = field(default_factory=list)
 
     def __str__(self) -> str:
+        """Get a table representation of the stored data."""
         table_headers = [
             "#",
             "Name",
@@ -52,6 +54,7 @@ class CoffeeData:
 
 
 def request_input(prompt: str) -> str:
+    """Print a message to the console, then ask for input with a little prompt symbol."""
     request_input(prompt)
     return input("> ")
 
@@ -65,6 +68,7 @@ def main():
 
     coffeeData = CoffeeData()
 
+    # Restore state from provided file, if available
     path = Path(args.data_filename)
     if path.exists():
         if path.is_dir():
@@ -75,6 +79,7 @@ def main():
             with open(path, "rb") as file:
                 coffeeData = pickle.load(file)
 
+    # Initialize a new session if we have no previous data
     if not coffeeData.drinkers:
         print(f"Starting new coffee drinker tracking in '{args.data_filename}'")
         num_drinkers = int(request_input("How many coffee drinkers are in your group?"))
@@ -95,21 +100,21 @@ def main():
         )
         print()
 
+    # Print the data as it currently stands, before making today's paying decision
     print(coffeeData)
     print()
 
-    # Select the person who has had the most paid on their behalf (so far) to pay for coffee today.
+    # Select the person who has had the most paid on their behalf (so far) to pay for coffee today
     todays_payer = max(
         coffeeData.drinkers,
         key=lambda drinker: drinker.drink_cost * drinker.times_covered_by_others,
     )
-
     print(f"{todays_payer.name} will be paying for everyone's coffee today!")
-
     for drinker in coffeeData.drinkers:
         if drinker is not todays_payer:
             drinker.times_covered_by_others += 1
 
+    # Save updated state to file
     with open(path, "wb") as file:
         pickle.dump(coffeeData, file)
 

@@ -12,6 +12,7 @@ from tabulate import tabulate
 
 DATA_FILENAME = "coffee_data.bin"
 
+
 @dataclass
 class CoffeeDrinker:
     name: str
@@ -27,9 +28,7 @@ class CoffeeDrinker:
 def _validate_file_path(filename: str) -> Path:
     path = Path(filename)
     if path.is_dir():
-        raise IsADirectoryError(
-            errno.EISDIR, os.strerror(errno.EISDIR), filename
-        )
+        raise IsADirectoryError(errno.EISDIR, os.strerror(errno.EISDIR), filename)
     return path
 
 
@@ -132,6 +131,7 @@ class CoffeeData:
             )
 
         return tabulate(table_rows, headers=table_headers)
+
 
 def __bool__(self) -> bool:
     return bool(self.drinkers)

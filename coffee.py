@@ -161,6 +161,6 @@ def request_input(
             processed_input = expected_type(user_input)
         except ValueError:
             print(
-                f"Could not convert input '{user_input}' to expected type ({expected_type}), please try again"
+                f"Could not convert input '{user_input}' to expected type ({expected_type.__name__}), please try again"
             )
     return processed_input

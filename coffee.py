@@ -149,18 +149,21 @@ def request_input(
     """Print a message to the console, then prompt for user input of the expected type"""
     print(prompt)
 
+    user_input = None
     processed_input = None
     while processed_input is None:
-        user_input = input("> ").strip()
-        if not user_input:
-            if default_value is None:
-                continue
-            else:
-                user_input = default_value
         try:
+            user_input = input("> ").strip()
+            if not user_input:
+                if default_value is None:
+                    continue
+                else:
+                    user_input = default_value
             processed_input = expected_type(user_input)
         except ValueError:
             print(
                 f"Could not convert input '{user_input}' to expected type ({expected_type.__name__}), please try again"
             )
+        except EOFError:
+            print()
     return processed_input

@@ -46,13 +46,10 @@
     <h3>Add a coffee drinker</h3>
     {{ render_form(drinker_form) }}
 
-    <hr/>
-
-    <hr/>
-
     {% if drinkers %}
+    <hr/>
     <h3>Remove a coffee drinker</h3>
-        {{ render_form(clear_form) }}
+    {{ render_form(clear_form) }}
     {% endif %}
 </div>
 

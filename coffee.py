@@ -69,7 +69,9 @@ class CoffeeData:
         """
         assert not self.drinkers
 
-        num_drinkers = int(request_input("How many coffee drinkers are in your group?"))
+        num_drinkers = request_input(
+            "How many coffee drinkers are in your group?", expected_type=int
+        )
         for idx in range(1, num_drinkers + 1):
             print(f"Getting data for drinker {idx}...")
             name = request_input("Name:")

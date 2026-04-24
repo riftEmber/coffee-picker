@@ -148,25 +148,25 @@ def main():
         )
 
     # Restore state from provided file, if available
-    coffeeData = CoffeeData()
-    coffeeData.restore_from_file(path)
+    coffee_data = CoffeeData()
+    coffee_data.restore_from_file(path)
 
     # Initialize a new session if we have no previous data
-    if not coffeeData.drinkers:
+    if not coffee_data.drinkers:
         print(f"Starting new coffee drinker tracking in '{args.data_filename}'")
-        coffeeData.initialize_on_cli()
+        coffee_data.initialize_on_cli()
         print()
 
     # Print the data as it currently stands, before making today's paying decision
-    print(coffeeData)
+    print(coffee_data)
     print()
 
     # Select and report today's payer
-    todays_payer = coffeeData.pick_payer_and_pay()
+    todays_payer = coffee_data.pick_payer_and_pay()
     print(f">> {todays_payer.name} is paying for everyone's coffee today!")
 
     # Save updated state to file
-    coffeeData.save_to_file(path)
+    coffee_data.save_to_file(path)
 
 
 if __name__ == "__main__":

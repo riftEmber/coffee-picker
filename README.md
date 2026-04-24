@@ -63,10 +63,10 @@ On each run, does the following:
 
 ### Logic
 
-Each run, a person who has had the most money contributed to their coffee
-orders _by others_ so far will be selected to pay. The intuition is that
-whoever "owes the most to the group" should pay, and the more expensive one's
-drink is, the faster that will increase.
+Each run, a person with maximum difference between `how much their drink
+purchases have cost` and `how much they've paid in combined orders` will be
+selected to pay. This strategy will minimize that difference for each person
+over a long enough sequence of orders, meeting my definition of fairness.
 
 No guarantees are made about how ties are broken, as over time it makes no
 difference in fairness.
@@ -80,6 +80,9 @@ difference in fairness.
 - The price of a drink never changes.
 - Drinks cost more than $0.
 - Every person purchases coffee each day, never missing a day.
+- If a person is added or removed, it's okay if short-term fairness is broken;
+  e.g., if someone pays for my coffee, and then I leave forever, they won't get
+  that money back.
 - It doesn't matter how "ties" are broken on a given day, including the first
   day when there is no historical data yet.
 - Each time the program is invoked to make a decision, that represents the

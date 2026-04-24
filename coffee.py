@@ -6,6 +6,8 @@ import os
 import pickle
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
+
 from tabulate import tabulate
 
 
@@ -109,8 +111,8 @@ class CoffeeData:
 
 
 def request_input(
-    prompt: str, expected_type: type = str, default_value: expected_type | None = None
-) -> expected_type:
+    prompt: str, expected_type: type = str, default_value: Any | None = None
+) -> Any:
     """Print a message to the console, then prompt for user input of the expected type"""
     print(prompt)
 

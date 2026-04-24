@@ -28,8 +28,6 @@ The web app will be available at: http://localhost:8000
 docker run -it --rm -v "$(pwd)":/app coffee-challenge python main.py
 ```
 
-This will run as a one-shot.
-
 ### Usage
 
 This program provides both a web app and CLI. The web app provides slightly

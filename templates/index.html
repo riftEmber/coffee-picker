@@ -27,16 +27,18 @@
             <td>Name</td>
             <td>Drink</td>
             <td>Cost</td>
-            <td>Times others covered for them</td>
-            <td>Amount others covered for them</td>
+            <td>Times drink ordered</td>
+            <td>Amount my drinks have cost</td>
+            <td>Amount paid so far</td>
         </tr>
     {% for drinker in drinkers %}
         <tr>
             <td>{{ drinker.name }}</td>
             <td>{{ drinker.drink_name }}</td>
             <td>{{ "${:,.2f}".format(drinker.drink_cost) }}</td>
-            <td>{{ drinker.times_covered_by_others }}</td>
-            <td>{{ "${:,.2f}".format(drinker.amount_covered_by_others()) }}</td>
+            <td>{{ drinker.times_drink_ordered }}</td>
+            <td>{{ "${:,.2f}".format(drinker.amount_drinks_cost_so_far()) }}</td>
+            <td>{{ "${:,.2f}".format(drinker.amount_paid_so_far) }}</td>
         </tr>
     {% endfor %}
     </table>

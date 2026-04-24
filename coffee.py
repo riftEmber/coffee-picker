@@ -18,11 +18,11 @@ class CoffeeDrinker:
     name: str
     drink_name: str
     drink_cost: float
-    times_covered_by_others: int
+    times_drink_ordered: int
+    amount_paid_so_far: float
 
-    def amount_covered_by_others(self) -> float:
-        """Calculate the amount of money that has been paid by others on this person's behalf"""
-        return self.drink_cost * self.times_covered_by_others
+    def amount_drinks_cost_so_far(self) -> float:
+        return self.drink_cost * self.times_drink_ordered
 
 
 def _validate_file_path(filename: str) -> Path:
@@ -75,14 +75,17 @@ class CoffeeData:
             name = request_input("Name:")
             drink_name = request_input("Favorite drink:")
             drink_cost = request_input("Drink cost:", expected_type=float)
-            times_covered_by_others = request_input(
-                "Times paid for by others (default 0)",
+            times_drink_ordered = request_input(
+                "Number of times this person has had their drink so far (default 0)",
                 expected_type=int,
                 default_value=0,
             )
-            drinker = CoffeeDrinker(
-                name, drink_name, drink_cost, times_covered_by_others
+            amount_paid_so_far = request_input(
+                "Amount paid for the group so far (default 0)",
+                expected_type=float,
+                default_value=0.0,
             )
+            drinker = CoffeeDrinker(name, drink_name, drink_cost, times_drink_ordered, amount_paid_so_far)
             self.add_drinker(drinker)
 
         print(
@@ -90,19 +93,13 @@ class CoffeeData:
         )
 
     def pick_payer_and_pay(self) -> CoffeeDrinker:
-        """Select who will pay for today's coffee order, and record payment.
+        """Select who will pay for today's coffee order, and record payment"""
 
-        Selects the person who has had the most paid for on their behalf so far.
-        """
-
-        todays_payer = max(
-            self.drinkers,
-            key=lambda drinker: drinker.drink_cost * drinker.times_covered_by_others,
-        )
+        todays_payer = max(self.drinkers, key=lambda d: d.amount_drinks_cost_so_far() - d.amount_paid_so_far)
 
         for drinker in self.drinkers:
-            if drinker is not todays_payer:
-                drinker.times_covered_by_others += 1
+            todays_payer.amount_paid_so_far += drinker.drink_cost
+            drinker.times_drink_ordered += 1
 
         return todays_payer
 
@@ -113,8 +110,9 @@ class CoffeeData:
             "Name",
             "Favorite Drink",
             "Drink cost",
-            "Times covered for",
-            "Amount covered for",
+            "Times ordered",
+            "Amount my drinks have cost",
+            "Amount paid so far",
         ]
 
         table_rows = []
@@ -125,8 +123,9 @@ class CoffeeData:
                     drinker.name,
                     drinker.drink_name,
                     drinker.drink_cost,
-                    drinker.times_covered_by_others,
-                    drinker.amount_covered_by_others(),
+                    drinker.times_drink_ordered,
+                    drinker.amount_drinks_cost_so_far(),
+                    drinker.amount_paid_so_far,
                 ]
             )
 

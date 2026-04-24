@@ -26,8 +26,11 @@ class DrinkerForm(FlaskForm):
     drink_cost = FloatField(
         "Cost of drink", validators=[DataRequired(), NumberRange(min=1)]
     )
-    times_covered_by_others = IntegerField(
-        "Times covered by others", default=0, validators=[NumberRange(min=0)]
+    times_drink_ordered = IntegerField(
+        "Times drink ordered", default=0, validators=[NumberRange(min=0)]
+    )
+    amount_paid_so_far = FloatField(
+        "Amount paid so far", default=0.0, validators=[NumberRange(min=0)]
     )
 
     submit = SubmitField("Add")
@@ -48,12 +51,12 @@ def hello_world():
     data_changed = False
     if drinker_form.submit.data and drinker_form.validate_on_submit():
         data_changed = True
-        fields = {field.name: field.data for field in drinker_form}
         new_drinker = CoffeeDrinker(
-            fields["name"],
-            fields["drink_name"],
-            fields["drink_cost"],
-            fields["times_covered_by_others"],
+            drinker_form.name.data,
+            drinker_form.drink_name.data,
+            drinker_form.drink_cost.data,
+            drinker_form.times_drink_ordered.data,
+            drinker_form.amount_paid_so_far.data,
         )
         coffee_data.add_drinker(new_drinker)
         message = f"Added drinker {drinker_form.name.data} to coffee chart"

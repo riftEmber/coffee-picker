@@ -23,21 +23,44 @@ class CoffeeDrinker:
         return self.drink_cost * self.times_covered_by_others
 
 
+def _validate_file_path(filename: str) -> Path:
+    path = Path(filename)
+    if path.is_dir():
+        raise IsADirectoryError(
+            errno.EISDIR, os.strerror(errno.EISDIR), filename
+        )
+    return path
+
+
 @dataclass
 class CoffeeData:
     drinkers: list[CoffeeDrinker] = field(default_factory=list)
 
-    def restore_from_file(self, path) -> None:
+    def restore_from_file(self, filename: str) -> None:
         """Restore saved data from file"""
+        path = _validate_file_path(filename)
+
         if path.exists():
             if path.stat().st_size:
                 with open(path, "rb") as file:
                     self.drinkers = pickle.load(file)
 
-    def save_to_file(self, path) -> None:
+    def save_to_file(self, filename: str) -> None:
         """Save this data to file, overwriting previous"""
+        path = _validate_file_path(filename)
+
         with open(path, "wb") as file:
             pickle.dump(self.drinkers, file)
+
+    def add_drinker(self, drinker: CoffeeDrinker) -> None:
+        self.drinkers.append(drinker)
+
+    def remove_drinker(self, drinker_name: str) -> bool:
+        for drinker in self.drinkers:
+            if drinker.name == drinker_name:
+                self.drinkers.remove(drinker)
+                return True
+        return False
 
     def initialize_on_cli(self) -> None:
         """Fill in initial data by prompting for command line input.
@@ -60,7 +83,7 @@ class CoffeeData:
             drinker = CoffeeDrinker(
                 name, drink_name, drink_cost, times_covered_by_others
             )
-            self.drinkers.append(drinker)
+            self.add_drinker(drinker)
 
         print(
             f"Data entered for all {num_drinkers} drinkers! This will be saved for next time."
@@ -109,6 +132,9 @@ class CoffeeData:
 
         return tabulate(table_rows, headers=table_headers)
 
+def __bool__(self) -> bool:
+    return bool(self.drinkers)
+
 
 def request_input(
     prompt: str, expected_type: type = str, default_value: Any | None = None
@@ -140,20 +166,15 @@ def main():
     parser.add_argument("data_filename")
     args = parser.parse_args()
 
-    # Validate provided path
-    path = Path(args.data_filename)
-    if path.is_dir():
-        raise IsADirectoryError(
-            errno.EISDIR, os.strerror(errno.EISDIR), args.data_filename
-        )
+    filename = args.data_filename
 
     # Restore state from provided file, if available
     coffee_data = CoffeeData()
-    coffee_data.restore_from_file(path)
+    coffee_data.restore_from_file(filename)
 
     # Initialize a new session if we have no previous data
     if not coffee_data.drinkers:
-        print(f"Starting new coffee drinker tracking in '{args.data_filename}'")
+        print(f"Starting new coffee drinker tracking in '{filename}'")
         coffee_data.initialize_on_cli()
         print()
 
@@ -172,7 +193,7 @@ def main():
     print(coffee_data)
 
     # Save updated state to file
-    coffee_data.save_to_file(path)
+    coffee_data.save_to_file(filename)
 
 
 if __name__ == "__main__":

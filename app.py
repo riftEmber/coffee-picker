@@ -1,5 +1,5 @@
-from flask_bootstrap import Bootstrap5
 from flask import Flask, render_template
+from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms.fields.numeric import IntegerField, FloatField
 
@@ -43,14 +43,15 @@ class PurchaseForm(FlaskForm):
 @app.route("/", methods=["GET", "POST"])
 def hello_world():
     drinker_form = DrinkerForm()
+    purchase_form = PurchaseForm()
+    clear_form = ClearForm()
+
     message = ""
     coffee_data = CoffeeData()
     coffee_data.restore_from_file(DATA_FILENAME)
-    purchase_form = PurchaseForm() if coffee_data else None
-    clear_form = ClearForm() if coffee_data else None
-    data_changed = False
+
+    any_form_submitted = True
     if drinker_form.submit.data and drinker_form.validate_on_submit():
-        data_changed = True
         new_drinker = CoffeeDrinker(
             drinker_form.name.data,
             drinker_form.drink_name.data,
@@ -65,7 +66,6 @@ def hello_world():
         and purchase_form.submit_purchase.data
         and purchase_form.validate_on_submit()
     ):
-        data_changed = True
         todays_payer = coffee_data.pick_payer_and_pay()
         message = f"{todays_payer.name} is paying for everyone's coffee today!"
     elif (
@@ -74,18 +74,19 @@ def hello_world():
         assert clear_form.clear_name.data
         if coffee_data.remove_drinker(clear_form.clear_name.data):
             message = f"Removed drinker '{clear_form.clear_name.data}'"
-            data_changed = True
         else:
             message = f"Could not find drinker with name '{clear_form.clear_name.data}'"
+    else:
+        any_form_submitted = False
 
-    if data_changed:
+    if any_form_submitted:
         coffee_data.save_to_file(DATA_FILENAME)
 
     return render_template(
         "index.html",
-        drinker_form=drinker_form,
-        purchase_form=purchase_form,
-        clear_form=clear_form,
+        drinker_form=DrinkerForm(formdata=None),
+        purchase_form=PurchaseForm(formdata=None),
+        clear_form=ClearForm(formdata=None),
         message=message,
         drinkers=coffee_data.drinkers,
     )

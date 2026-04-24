@@ -39,8 +39,7 @@ more functionality. You can switch between the two on subsequent invocations
 Data persists between invocations of the app, even when switching between CLI
 and web app. It is stored in the file `coffee_data.bin` in the directory where
 the app is invoked. Removing this file or running from a different directory
-will start a fresh coffee rotation. The listed times and amounts "covered for"
-refer to when that person's coffee is paid for by someone else.
+will start a fresh coffee rotation.
 
 #### Web app
 

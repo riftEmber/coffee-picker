@@ -85,7 +85,9 @@ class CoffeeData:
                 expected_type=float,
                 default_value=0.0,
             )
-            drinker = CoffeeDrinker(name, drink_name, drink_cost, times_drink_ordered, amount_paid_so_far)
+            drinker = CoffeeDrinker(
+                name, drink_name, drink_cost, times_drink_ordered, amount_paid_so_far
+            )
             self.add_drinker(drinker)
 
         print(
@@ -95,7 +97,10 @@ class CoffeeData:
     def pick_payer_and_pay(self) -> CoffeeDrinker:
         """Select who will pay for today's coffee order, and record payment"""
 
-        todays_payer = max(self.drinkers, key=lambda d: d.amount_drinks_cost_so_far() - d.amount_paid_so_far)
+        todays_payer = max(
+            self.drinkers,
+            key=lambda d: d.amount_drinks_cost_so_far() - d.amount_paid_so_far,
+        )
 
         for drinker in self.drinkers:
             todays_payer.amount_paid_so_far += drinker.drink_cost
@@ -157,38 +162,3 @@ def request_input(
                 f"Could not convert input '{user_input}' to expected type ({expected_type}), please try again"
             )
     return processed_input
-
-
-def main():
-    filename = DATA_FILENAME
-
-    # Restore state from provided file, if available
-    coffee_data = CoffeeData()
-    coffee_data.restore_from_file(filename)
-
-    # Initialize a new session if we have no previous data
-    if not coffee_data.drinkers:
-        print(f"Starting new coffee drinker tracking in '{filename}'")
-        coffee_data.initialize_on_cli()
-        print()
-
-    # Print the data as it currently stands, before making today's paying decision
-    print("Payment data so far:")
-    print(coffee_data)
-    print()
-
-    # Select and report today's payer
-    todays_payer = coffee_data.pick_payer_and_pay()
-    print(f">> {todays_payer.name} is paying for everyone's coffee today!")
-    print()
-
-    # Print data after today's order
-    print("Payment data after today:")
-    print(coffee_data)
-
-    # Save updated state to file
-    coffee_data.save_to_file(filename)
-
-
-if __name__ == "__main__":
-    main()

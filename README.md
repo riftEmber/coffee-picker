@@ -25,7 +25,7 @@ The web app will be available at: http://localhost:8000
 #### Run (CLI)
 
 ```bash
-docker run -it --rm -v "$(pwd)":/app coffee-challenge python coffee.py
+docker run -it --rm -v "$(pwd)":/app coffee-challenge python main.py
 ```
 
 This will run as a one-shot.

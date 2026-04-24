@@ -130,7 +130,7 @@ class CoffeeData:
                 ]
             )
 
-        return tabulate(table_rows, headers=table_headers)
+        return tabulate(table_rows, headers=table_headers, tablefmt="rounded_grid")
 
 
 def __bool__(self) -> bool:

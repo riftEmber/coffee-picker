@@ -5,7 +5,7 @@ from wtforms.fields.numeric import IntegerField, FloatField
 
 from coffee import CoffeeData, CoffeeDrinker
 from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, NumberRange
 import secrets
 
 
@@ -18,18 +18,19 @@ csrf = CSRFProtect(app)
 
 class ClearForm(FlaskForm):
     clear_name = StringField('Name', validators=[DataRequired()])
-    submit_clear = SubmitField('Remove this person (!!)')
+
+    submit_clear = SubmitField('Remove')
 
 class DrinkerForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     drink_name = StringField('Favorite Drink', validators=[DataRequired()])
-    drink_cost = FloatField('Cost of drink', validators=[DataRequired()])
-    times_covered_by_others = IntegerField('Times covered by others', default=0)
+    drink_cost = FloatField('Cost of drink', validators=[DataRequired(), NumberRange(min=1)])
+    times_covered_by_others = IntegerField('Times covered by others', default=0, validators=[NumberRange(min=0)])
 
-    submit = SubmitField()
+    submit = SubmitField('Add')
 
 class PurchaseForm(FlaskForm):
-    submit_purchase = SubmitField("Purchase")
+    submit_purchase = SubmitField("Decide")
 
 @app.route("/", methods=['GET', 'POST'])
 def hello_world():
@@ -53,6 +54,7 @@ def hello_world():
     elif clear_form and clear_form.submit_clear.data and clear_form.validate_on_submit():
         assert clear_form.clear_name.data
         if coffee_data.remove_drinker(clear_form.clear_name.data):
+            message = f"Removed drinker '{clear_form.clear_name.data}'"
             data_changed = True
         else:
             message = f"Could not find drinker with name '{clear_form.clear_name.data}'"

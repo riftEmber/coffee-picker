@@ -10,7 +10,7 @@ from typing import Any
 
 from tabulate import tabulate
 
-DATA_FILENAME = "coffee_data.txt"
+DATA_FILENAME = "coffee_data.bin"
 
 @dataclass
 class CoffeeDrinker:

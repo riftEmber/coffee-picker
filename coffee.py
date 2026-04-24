@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 
-import argparse
 import errno
+import jsonpickle
 import os
-import pickle
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 from tabulate import tabulate
 
-DATA_FILENAME = "coffee_data.bin"
+DATA_FILENAME = "coffee_data.json"
 
 
 @dataclass
@@ -42,15 +41,15 @@ class CoffeeData:
 
         if path.exists():
             if path.stat().st_size:
-                with open(path, "rb") as file:
-                    self.drinkers = pickle.load(file)
+                with open(path, "r") as file:
+                    self.drinkers = jsonpickle.decode(file.read())
 
     def save_to_file(self, filename: str) -> None:
         """Save this data to file, overwriting previous"""
         path = _validate_file_path(filename)
 
-        with open(path, "wb") as file:
-            pickle.dump(self.drinkers, file)
+        with open(path, "w") as file:
+            file.write(jsonpickle.encode(self.drinkers))
 
     def add_drinker(self, drinker: CoffeeDrinker) -> None:
         self.drinkers.append(drinker)

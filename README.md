@@ -62,8 +62,9 @@ On each run, does the following:
 
 Each run, a person with maximum difference between `how much their drink
 purchases have cost` and `how much they've paid in combined orders` will be
-selected to pay. This strategy will minimize that difference for each person
-over a long enough sequence of orders, meeting my definition of fairness.
+selected to pay -- essentially, whoever "owes the most". This strategy will
+minimize that difference for each person over a long enough sequence of
+orders, meeting my definition of fairness.
 
 No guarantees are made about how ties are broken, as over time it makes no
 difference in fairness.

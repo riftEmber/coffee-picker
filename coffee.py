@@ -49,9 +49,11 @@ class CoffeeData:
             print(f"Getting data for drinker {idx}...")
             name = request_input("Name:")
             drink_name = request_input("Favorite drink:")
-            drink_cost = float(request_input("Drink cost:"))
-            times_covered_by_others = int(
-                request_input("Times paid for by others (default 0)") or 0
+            drink_cost = request_input("Drink cost:", expected_type=float)
+            times_covered_by_others = request_input(
+                "Times paid for by others (default 0)",
+                expected_type=int,
+                default_value=0,
             )
             drinker = CoffeeDrinker(
                 name, drink_name, drink_cost, times_covered_by_others
@@ -106,17 +108,27 @@ class CoffeeData:
         return tabulate(table_rows, headers=table_headers)
 
 
-def request_input(prompt: str, expected_type: type = str) -> str:
+def request_input(
+    prompt: str, expected_type: type = str, default_value: expected_type | None = None
+) -> expected_type:
     """Print a message to the console, then prompt for user input of the expected type"""
     print(prompt)
-    while True:
-        user_input_str = input("> ")
+
+    processed_input = None
+    while processed_input is None:
+        user_input = input("> ").strip()
+        if not user_input:
+            if default_value is None:
+                continue
+            else:
+                user_input = default_value
         try:
-            return expected_type(user_input_str)
+            processed_input = expected_type(user_input)
         except ValueError:
             print(
-                f"Could not convert input '{user_input_str}' to expected type ({expected_type}), please try again"
+                f"Could not convert input '{user_input}' to expected type ({expected_type}), please try again"
             )
+    return processed_input
 
 
 def main():
@@ -149,7 +161,7 @@ def main():
 
     # Select and report today's payer
     todays_payer = coffeeData.pick_payer_and_pay()
-    print(f"{todays_payer.name} is paying for everyone's coffee today!")
+    print(f">> {todays_payer.name} is paying for everyone's coffee today!")
 
     # Save updated state to file
     coffeeData.save_to_file(path)

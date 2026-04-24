@@ -3,13 +3,12 @@ from flask import Flask, render_template
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms.fields.numeric import IntegerField, FloatField
 
-from coffee import CoffeeData, CoffeeDrinker
+from coffee import CoffeeData, CoffeeDrinker, DATA_FILENAME
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
 import secrets
 
 
-DATA_FILENAME = "coffee_data.txt"
 
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(32)

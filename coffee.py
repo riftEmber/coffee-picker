@@ -10,6 +10,7 @@ from typing import Any
 
 from tabulate import tabulate
 
+DATA_FILENAME = "coffee_data.txt"
 
 @dataclass
 class CoffeeDrinker:
@@ -160,13 +161,7 @@ def request_input(
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        prog="Coffee", description="Determine whose turn it is to pay for coffee today"
-    )
-    parser.add_argument("data_filename")
-    args = parser.parse_args()
-
-    filename = args.data_filename
+    filename = DATA_FILENAME
 
     # Restore state from provided file, if available
     coffee_data = CoffeeData()

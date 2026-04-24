@@ -79,6 +79,7 @@ difference in fairness.
 - A person's favorite drink never changes.
 - The price of a drink never changes.
 - Drinks cost more than $0.
+- Drink costs are a whole number of cents.
 - Every person purchases coffee each day, never missing a day.
 - If a person is added or removed, it's okay if short-term fairness is broken;
   e.g., if someone pays for my coffee, and then I leave forever, they won't get

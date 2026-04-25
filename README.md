@@ -69,7 +69,7 @@ orders, meeting my definition of fairness.
 No guarantees are made about how ties are broken, as over time it makes no
 difference in fairness.
 
-### Assumptions
+#### Assumptions
 
 - A "fair" strategy means that, over a long period of time, each person has
   paid an amount proportional to how much their own drink costs.

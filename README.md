@@ -41,6 +41,15 @@ and web app. It is stored in the file `coffee_data.bin` in the directory where
 the app is invoked. Removing this file or running from a different directory
 will start a fresh coffee rotation.
 
+In the saved data:
+- the number of times a person has ordered refers to how many times they've had
+  their drink (regardless of who paid for it)
+- the amount their drinks have cost refers to the amount of money paid for this
+  person's drink orders (by anyone), i.e., the cost of their drink multiplied
+  by the number of times it's been ordered
+- the amount they've paid so far refers to how much they have spent on
+  purchasing for the whole group (inclusive of their own drink)
+
 #### Web app
 
 - Displays the historical data of who has paid what so far.

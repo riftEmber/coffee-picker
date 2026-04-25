@@ -7,7 +7,11 @@
 <body>
 
 <div class="container">
-    <h1>Who's paying for coffee today?</h1>
+
+    <div class="jumbotron text-center">
+        <h1>Coffee Picker</h1>
+        <p>Who's paying for coffee today?</p>
+    </div>
 
     {% if drinkers %}
     {{ render_form(purchase_form) }}

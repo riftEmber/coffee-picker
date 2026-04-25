@@ -1,4 +1,4 @@
-# Coffee Challenge
+# Coffee Picker
 
 A small app for deciding whose turn it is to pay for coffee today.
 
@@ -11,13 +11,13 @@ A small app for deciding whose turn it is to pay for coffee today.
 #### Build
 
 ```bash
-docker build -t coffee-challenge .
+docker build -t coffee-picker .
 ```
 
 #### Run (web app)
 
 ```bash
-docker run -it --rm -v "$(pwd)":/app -p 8000:8000 coffee-challenge
+docker run -it --rm -v "$(pwd)":/app -p 8000:8000 coffee-picker
 ```
 
 The web app will be available at: http://localhost:8000
@@ -25,7 +25,7 @@ The web app will be available at: http://localhost:8000
 #### Run (CLI)
 
 ```bash
-docker run -it --rm -v "$(pwd)":/app coffee-challenge python main.py
+docker run -it --rm -v "$(pwd)":/app coffee-picker python main.py
 ```
 
 ### Usage
